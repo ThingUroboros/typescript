@@ -1,8 +1,9 @@
-import * as express from 'express';
 import * as fs from 'fs';
 import * as url from 'url';
 // tslint:disable-next-line:ordered-imports
 import * as bodyParser from 'body-parser'; // Přidáno kvůli postu (Data chodí v .body)
+
+import * as restify from 'restify';
 
 import { userModel } from './models/UserModel';
 import { userSchema } from './schema/userSchema';
@@ -14,12 +15,9 @@ import * as Joi from 'joi';
 
 import { sequelize } from './instances/sequelize';
 
-const app = express();
+const app = restify.createServer();
 
-// Configure Express to parse incoming JSON data
-app.use(express.json()); 
-
-//app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true,
 })); 
