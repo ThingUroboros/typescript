@@ -1,0 +1,6 @@
+nano ~/.gitignore
+
+touch ~/.gitignore
+$ git config --global core.excludesFile ~/.gitignore
+
+https://cs.atlassian.com/git/tutorials/saving-changes/gitignore
