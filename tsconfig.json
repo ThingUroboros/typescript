@@ -11,7 +11,9 @@
     "compilerOptions": {
         "sourceMap": true,
         "module": "commonjs",
-        "target": "es2016",
+        "target": "es5",
+        "lib": ["es6", "dom"],
+        "types": ["jest","reflect-metadata"],
         "outDir": "./dist",
         "baseUrl": "./src",
         "moduleResolution": "node",
@@ -32,7 +34,7 @@
         "suppressImplicitAnyIndexErrors": true
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts", "__test__/base.test.ts"
     ],
     "exclude": [
         "node_modules"

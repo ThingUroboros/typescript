@@ -1,26 +1,13 @@
 import * as fs from 'fs';
-import * as url from 'url';
-// tslint:disable-next-line:ordered-imports
-import * as bodyParser from 'body-parser'; // Přidáno kvůli postu (Data chodí v .body)
-
-import * as restify from 'restify';
-
-import { userModel } from './models/UserModel';
-import { userSchema } from './schema/userSchema';
-
-import { User } from './instances/intefaces';
-
 // tslint:disable-next-line:no-implicit-dependencies
 import * as Joi from 'joi'; 
-
+import * as url from 'url';
+import { app } from './class/app';
+import { User } from './interfaces/user';
+// tslint:disable-next-line:ordered-imports
 import { sequelize } from './instances/sequelize';
-
-const app = restify.createServer();
-
-app.use(bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-    extended: true,
-})); 
+import { userModel } from './models/UserModel';
+import { userSchema } from './schema/userSchema';
 
 app.get('/posli', (request, res) => {
     console.log(request);
@@ -62,25 +49,18 @@ app.post('/', (req, res) => {
 app.post('/json', (req, res) => {
 
     console.log('zpracovávám json');
-   
-    const jmeno = req.body.jmeno;
-    const prijmeni = req.body.prijmeni;
-    const heslo = req.body.heslo;
-    const datum_narozeni = req.body.datum_narozeni;
+  
+    const user : User = {
+        jmeno: req.body.jmeno,
+        prijmeni: req.body.prijmeni,
+        heslo: req.body.heslo,
+        datum_narozeni: req.body.datum_narozeni,
+    };
 
     const result = Joi.validate(
-        { jmeno, prijmeni , datum_narozeni, heslo: heslo }, userSchema);
+        { jmeno: user.jmeno, prijmeni: user.prijmeni , datum_narozeni: user.datum_narozeni, heslo: user.heslo }, userSchema);
 
-    if (result.error === null) {
-           
-            const test : User = {
-                jmeno: req.body.jmeno,
-                prijmeni: req.body.prijmeni,
-                heslo: req.body.heslom,
-                datum_narozeni: req.body.datum_narozeni,
-            };
-            console.log(test.datum_narozeni);
-
+    if (result.error === null) {           
            /// Uložíme do databáze
             console.log('Kontrola proběhla v pořádku budeme zapisovat do databaze');
 
@@ -91,10 +71,10 @@ app.post('/json', (req, res) => {
              
               userModel.sync({force: true}).then(() => {
                     return userModel.create({
-                    jmeno: test.jmeno,
-                    prijmeni: test.prijmeni,
-                    heslo: test.heslo,
-                    datum_narozeni: test.datum_narozeni,
+                    jmeno: user.jmeno,
+                    prijmeni: user.prijmeni,
+                    heslo: user.heslo,
+                    datum_narozeni: user.datum_narozeni,
                     });
                 });
 
