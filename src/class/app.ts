@@ -6,14 +6,14 @@ class App {
 
     public app: restify.Server;
 
-    constructor() {}
-
-    public crateteServer() {
-         this.app = restify.createServer();
-         this.config();
-
-         return this.app;
+    constructor() {
+        this.crateteServer();
+        this.config();
     }
+
+    private crateteServer(): void {
+         this.app = restify.createServer();
+     }
 
     private config(): void {
         // support application/json type post data
@@ -26,4 +26,4 @@ class App {
 
 }
 
-export const app = new App().crateteServer();
+export const app = new App().app;
