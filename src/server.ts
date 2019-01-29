@@ -9,12 +9,12 @@ import { sequelize } from './instances/sequelize';
 import { userModel } from './models/UserModel';
 import { userSchema } from './schema/userSchema';
 
-app.get('/posli', (request, res) => {
+app.get('/send', (request, res) => {
     console.log(request);
     const { query } = url.parse(request.url, true);
     
-    console.log(query.jmeno);
-    console.log(query.prijmeni);
+    console.log(query.name);
+    console.log(query.surname);
     
     fs.readFile('./form.html', (_, data) => {
         res.writeHead(200, { 'Content-Type': 'text/html' });
@@ -48,33 +48,31 @@ app.post('/', (req, res) => {
 
 app.post('/json', (req, res) => {
 
-    console.log('zpracovávám json');
-  
     const user : User = {
-        jmeno: req.body.jmeno,
-        prijmeni: req.body.prijmeni,
-        heslo: req.body.heslo,
-        datum_narozeni: req.body.datum_narozeni,
+        name: req.body.name,
+        surname: req.body.surname,
+        password: req.body.password,
+        birthDate: req.body.birthDate,
     };
 
+    console.log(user.birthDate);
+
     const result = Joi.validate(
-        { jmeno: user.jmeno, prijmeni: user.prijmeni , datum_narozeni: user.datum_narozeni, heslo: user.heslo }, userSchema);
+        { name: user.name, surname: user.surname , birthDate: user.birthDate, password: user.password }, userSchema);
 
     if (result.error === null) {           
-           /// Uložíme do databáze
-            console.log('Kontrola proběhla v pořádku budeme zapisovat do databaze');
-
+           
             sequelize
             .authenticate()
             .then(() => {
-              console.log('Připojeni k DB');
+              console.log('Connection DB');
              
               userModel.sync({force: true}).then(() => {
                     return userModel.create({
-                    jmeno: user.jmeno,
-                    prijmeni: user.prijmeni,
-                    heslo: user.heslo,
-                    datum_narozeni: user.datum_narozeni,
+                    name: user.name,
+                    surname: user.surname,
+                    password: user.password,
+                    birthDate: user.birthDate,
                     });
                 });
 
@@ -107,6 +105,6 @@ const port : number = 5000;
 
 app.listen(port, () => {
 
-    console.log(`spuštěno na localhost port:  ${port}`);
+    console.log(`Start aplication on localhost port:  ${port}`);
 
 });

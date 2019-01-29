@@ -2,16 +2,16 @@ import * as Sequelize from 'sequelize';
 import { sequelize } from '../instances/sequelize';
 
 export const userModel = sequelize.define('userModel', {
-    jmeno: {
+    name: {
         type: Sequelize.STRING,
     },
-    prijmeni: {
+    surname: {
         type: Sequelize.STRING,
     },
-    heslo: {
+    password: {
         type: Sequelize.STRING,
     },
-    datum_narozeni: {
+    birthDate: {
         type: Sequelize.STRING,
      },
 });
