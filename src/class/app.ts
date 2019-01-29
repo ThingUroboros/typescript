@@ -7,11 +7,11 @@ class App {
     public app: restify.Server;
 
     constructor() {
-        this.crateteServer();
+        this.createServer();
         this.config();
     }
 
-    private crateteServer(): void {
+    private createServer(): void {
          this.app = restify.createServer();
      }
 
