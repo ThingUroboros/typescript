@@ -6,9 +6,13 @@ class App {
 
     public app: restify.Server;
 
-    constructor() {
-        this.app = restify.createServer(); //run the express instance and store in app
-        this.config();
+    constructor() {}
+
+    public crateteServer() {
+         this.app = restify.createServer();
+         this.config();
+
+         return this.app;
     }
 
     private config(): void {
@@ -22,4 +26,4 @@ class App {
 
 }
 
-export const app = new App().app;
+export const app = new App().crateteServer();
