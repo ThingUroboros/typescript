@@ -4,3 +4,12 @@ touch ~/.gitignore
 $ git config --global core.excludesFile ~/.gitignore
 
 https://cs.atlassian.com/git/tutorials/saving-changes/gitignore
+
+///
+
+touch .gitignore
+$ git config --global core.excludesFile .gitignore
+
+/// Clear gitignore file
+
+git rm -r --cached . ; git add .
